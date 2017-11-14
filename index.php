@@ -1,7 +1,9 @@
 <?php
 
+require_once 'inc/class.helpers.php';
 require_once 'inc/class.simplechat.php';
-$sc = new SimpleChat();
+$help = new Helper();
+$sc = new SimpleChat($help);
 
 ?>
 <!DOCTYPE html>
@@ -10,9 +12,9 @@ $sc = new SimpleChat();
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript"src="js/angular.min.js"></script>
-<script type="text/javascript" src="js/bootstrap3/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
-<link rel="stylesheet" href="css/bootstrap3/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <title>Simple Chat</title>
 
@@ -70,7 +72,7 @@ $( document ).ready(function() {
 			<form action="index.php" method="post">
 			  <div class="form-group">
 				<label for="message">Message:</label>
-				<textarea name="message" style="width:400px; height:100px"><?php print($_POST['message']); ?></textarea>
+				<textarea name="message"><?php print($_POST['message']); ?></textarea>
 			  </div>
 			  <button type="submit" class="btn btn-default">Submit</button>
 			</form>
@@ -81,8 +83,6 @@ $( document ).ready(function() {
 		</div><!-- /footer -->
 		
 	</div>
-	
-</div>
 
 </body>
 </html>

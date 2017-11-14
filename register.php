@@ -1,7 +1,9 @@
 <?php
 
-require_once 'inc/class.register.php';
-$register = new Register();
+require 'inc/class.helper.php';
+require 'inc/class.register.php';
+$help = new Helper();
+$register = new Register($help);
 
 ?>
 <!DOCTYPE html>
@@ -10,9 +12,9 @@ $register = new Register();
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript"src="js/angular.min.js"></script>
-<script type="text/javascript" src="js/bootstrap3/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
-<link rel="stylesheet" href="css/bootstrap3/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <title>Simple Chat</title>
 
@@ -67,35 +69,132 @@ $( document ).ready(function() {
 		</div><!-- /header -->
 		
 		<div>
-			<h2>Register</h2>
-			<form action="index.php" method="post">
-			  <div class="form-group">
-				<label for="first_name">First name:</label>
-				<input type="text" name="first_name" class="form-control" id="first_name">
+		<form class="well form-horizontal" action=" " method="post"  id="contact_form">
+		<fieldset>
+
+			<!-- Form Name -->
+			<legend><center><h2><b>Registration Form</b></h2></center></legend><br>
+
+			<!-- Text input-->
+			
+			<div class="form-group"> 
+			  <label class="col-md-4 control-label">Title</label>
+				<div class="col-md-4 selectContainer">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+						<select name="title" class="form-control selectpicker">
+						  <option value="">Select</option>
+						  <option>Mr</option>
+						  <option>Mrs</option>
+						  <option >Ms</option>
+						  <option >Miss</option>
+						  <option >Dr</option>
+						  <option >Rev</option>
+						  <option >Prof</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+			  <label class="col-md-4 control-label">First Name</label>  
+			  <div class="col-md-4 inputGroupContainer">
+			  <div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input  name="first_name" placeholder="First Name" class="form-control"  type="text">
+				</div>
 			  </div>
-			  <div class="form-group">
-				<label for="surname">Surname:</label>
-				<input type="text" name="surname" class="form-control" id="surname">
+			</div>
+
+			<!-- Text input-->
+
+			<div class="form-group">
+			  <label class="col-md-4 control-label" >Surname</label> 
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="surname" placeholder="Surname" class="form-control"  type="text">
+				</div>
 			  </div>
-			  <div class="form-group">
-				<label for="email">Email address:</label>
-				<input type="text" name="email" class="form-control" id="email">
+			</div>
+
+			<!-- Text input-->
+
+			<div class="form-group">
+			  <label class="col-md-4 control-label" >Nickname</label> 
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="nickname" placeholder="Nickname" class="form-control"  type="text">
+				</div>
 			  </div>
-			  <div class="form-group">
-				<label for="pwd">Choose a password:</label>
-				<input type="password" name="password" class="form-control" id="password">
+			</div>
+			
+			<!-- Text input-->
+				   <div class="form-group">
+			  <label class="col-md-4 control-label">E-Mail</label>  
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+			  <input name="email" placeholder="E-Mail Address" class="form-control"  type="text">
+				</div>
 			  </div>
-			   <div class="form-group">
-				<label for="pwd">Confirm your password:</label>
-				<input type="password" name="password_conf" class="form-control" id="password_conf">
+			</div>
+
+			<!-- Text input-->
+
+			<div class="form-group">
+			  <label class="col-md-4 control-label" >Password</label> 
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="password" placeholder="Password" class="form-control"  type="password">
+				</div>
 			  </div>
-			  <button type="submit" class="btn btn-default">Submit</button>
-			</form>
-		</div>
+			</div>
+
+			<!-- Text input-->
+
+			<div class="form-group">
+			  <label class="col-md-4 control-label" >Confirm Password</label> 
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="password_confirm" placeholder="Confirm Password" class="form-control"  type="password">
+				</div>
+			  </div>
+			</div>
+
+			<!-- Text input-->
+				   
+			<div class="form-group">
+			  <label class="col-md-4 control-label">Contact No.</label>  
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+			  <input name="contact_no" placeholder="Contact No." class="form-control" type="text">
+				</div>
+			  </div>
+			</div>
+
+			<!-- Select Basic -->
+
+			<!-- Success message -->
+			<div class="alert alert-success" role="alert" id="success_message">Success <i class="glyphicon glyphicon-thumbs-up"></i> Success!.</div>
+
+			<!-- Button -->
+			<div class="form-group">
+			  <label class="col-md-4 control-label"></label>
+			  <div class="col-md-4"><br>
+				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+			  </div>
+			</div>
+
+		</fieldset>
+	</form>
+	</div>
 		
-		<div id="footer">
-		
-		</div><!-- /footer -->
+	<div id="footer"></div><!-- /footer -->
 		
 	</div>
 	

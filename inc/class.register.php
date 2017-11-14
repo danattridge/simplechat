@@ -3,11 +3,16 @@
 class Register {
 
 	private $mysqli;
+	private $formFields = array(
+		'title', 'first_name', 'surname', 'nickname', 'email', 'password', 'password_confirm', 'contact_no'
+	);
 	
-	function __construct(){
+	function __construct($helper){
 		
 		//get db connection
 		$this->mysqli = $this->db_connect();
+		$this->initialize();
+		$this->insert_user();
 	}
 	
 	function __destruct(){
@@ -33,33 +38,40 @@ class Register {
 		return $mysqli;
 	}
 	
-	protected function insert_message()
+	protected function initialize()
+	{
+		foreach ($this->formFields as $field){
+			$_POST[$field] = isset($_POST[$field]) ? $_POST[$field] : '';
+		}
+	}
+	
+	protected function insert_user()
 	{
 		//check if message has been entered
-		if (isset($_POST['message']) && !empty($_POST['message'])){
+		if (isset($_POST['surname']) && !empty($_POST['surname'])){
 			
-			$message = $_POST['message'];
+			$sql = "INSERT INTO `sc_user` (`ID`, `title`, `surname`, `firstname`, `nickname`, `email`, `password`, `dob`, `contact_no`) VALUES (NULL, 'Mr', 'Attridge', 'Daniel', 'Dan', 'danattridge56@gmail.com', 'password1', '1978-05-06', '07821 894556');";
 			
-			$this->currentMessage = $this->sanitize_input($_POST['message']);
+			$fieldNames = '';
+			$fieldValues = '';
 			
-			$sql = "INSERT INTO `sc_message` (`ID`, `user_id`, `message`, `datetime_posted`, `datetime_seen`, `deleted`) VALUES (NULL, '1', '".$this->currentMessage ."', CURRENT_TIMESTAMP, NULL, '0');";
-
-			if ($this->mysqli->query($sql) === true) {
-				return true;
-			} else {
-				echo "Error: " . $sql . "<br>" . $this->mysqli->error;
+			foreach ($this->formFields as $field){
+				if ($field != 'password_confirm'){
+					$fieldNames .= '`'.$field.'`, ';
+					$fieldValues .= "'".$_POST[$field]."', ";
+				}
 			}
+			
+			$fieldNames = rtrim($fieldNames, ', ');
+			$fieldValues = rtrim($fieldValues, ', ');
+			
+			$insertSql = "INSERT INTO `sc_user` (" . $fieldNames . ") VALUES (" . $fieldValues . ")";
+			
+			echo $insertSql;
 			
 			
 
 		}
-	}
-	
-	protected function sanitize_input(&$userInput)
-	{
-		$sanitizedInput = mysqli_real_escape_string($this->mysqli, $userInput);
-		$sanitizedInput = htmlspecialchars($sanitizedInput);
-		return $sanitizedInput;
 	}
 	
 }
