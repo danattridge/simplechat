@@ -1,9 +1,12 @@
 <?php
 
+require_once 'inc/config.php';
 require 'inc/class.helper.php';
 require 'inc/class.register.php';
 $help = new Helper();
 $register = new Register($help);
+
+$validationError = $register->validateUserData();
 
 ?>
 <!DOCTYPE html>
@@ -81,7 +84,6 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label">Title</label>
 				<div class="col-md-4 selectContainer">
 					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
 						<select name="title" class="form-control selectpicker">
 						  <option value="">Select</option>
 						  <option>Mr</option>
@@ -93,6 +95,7 @@ $( document ).ready(function() {
 						  <option >Prof</option>
 						</select>
 					</div>
+					<?php print(isset($validationError['title']) ? '<p>'.$validationError['title'].'</p>' : ''); ?>
 				</div>
 			</div>
 
@@ -100,9 +103,9 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label">First Name</label>  
 			  <div class="col-md-4 inputGroupContainer">
 			  <div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 			  <input  name="first_name" placeholder="First Name" class="form-control"  type="text">
 				</div>
+				<?php print(isset($validationError['first_name']) ? '<p>'.$validationError['first_name'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -112,9 +115,9 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label" >Surname</label> 
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 			  <input name="surname" placeholder="Surname" class="form-control"  type="text">
 				</div>
+				<?php print(isset($validationError['surname']) ? '<p>'.$validationError['surname'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -124,10 +127,25 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label" >Nickname</label> 
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 			  <input name="nickname" placeholder="Nickname" class="form-control"  type="text">
 				</div>
+				<?php print(isset($validationError['nickname']) ? '<p>'.$validationError['nickname'].'</p>' : ''); ?>
 			  </div>
+			</div>
+			
+			<div class="form-group">
+				<label for="gender" class="col-md-4 control-label" >Gender</label> 
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<div class="radio">
+							<label><input type="radio" name="gender" value="male">Male</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="gender" value="female">Female</label>
+						</div>
+					</div>
+					<?php print(isset($validationError['gender']) ? '<p>'.$validationError['gender'].'</p>' : ''); ?>
+				</div>
 			</div>
 			
 			<!-- Text input-->
@@ -135,9 +153,9 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label">E-Mail</label>  
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-			  <input name="email" placeholder="E-Mail Address" class="form-control"  type="text">
+					<input name="email" placeholder="E-Mail Address" class="form-control"  type="text" />
 				</div>
+				<?php print(isset($validationError['email']) ? '<p>'.$validationError['email'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -147,9 +165,9 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label" >Password</label> 
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			  <input name="password" placeholder="Password" class="form-control"  type="password">
+					<input name="password" placeholder="Password" class="form-control"  type="password" />
 				</div>
+				<?php print(isset($validationError['password']) ? '<p>'.$validationError['password'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -159,9 +177,9 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label" >Confirm Password</label> 
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			  <input name="password_confirm" placeholder="Confirm Password" class="form-control"  type="password">
+					<input name="password_confirm" placeholder="Confirm Password" class="form-control"  type="password" />
 				</div>
+				<?php print(isset($validationError['password_confirm']) ? '<p>'.$validationError['password_confirm'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -171,9 +189,22 @@ $( document ).ready(function() {
 			  <label class="col-md-4 control-label">Contact No.</label>  
 				<div class="col-md-4 inputGroupContainer">
 				<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-			  <input name="contact_no" placeholder="Contact No." class="form-control" type="text">
+					<input name="contact_no" placeholder="Contact No." class="form-control" type="text">
 				</div>
+				<?php print(isset($validationError['contact_no']) ? '<p>'.$validationError['contact_no'].'</p>' : ''); ?>
+			  </div>
+			</div>
+			
+			<!-- Text input-->
+				   
+			<div class="form-group">
+			  <label for="dob" class="col-md-4 control-label">Date of birth</label>  
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="dob" placeholder="Date of Birth" class="form-control" type="text">
+				</div>
+				<?php print(isset($validationError['dob']) ? '<p>'.$validationError['dob'].'</p>' : ''); ?>
 			  </div>
 			</div>
 
@@ -186,7 +217,7 @@ $( document ).ready(function() {
 			<div class="form-group">
 			  <label class="col-md-4 control-label"></label>
 			  <div class="col-md-4"><br>
-				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+				<button type="submit" name="submit" value="submit" class="btn btn-warning" >SUBMIT <span class="glyphicon glyphicon-send"></span></button>
 			  </div>
 			</div>
 

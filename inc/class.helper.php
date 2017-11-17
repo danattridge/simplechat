@@ -1,7 +1,6 @@
 <?php
 
 class Helper {
-
 	
 	function __construct(){
 		
@@ -11,9 +10,9 @@ class Helper {
 	
 	}
 	
-	protected function sanitize_input(&$userInput)
+	public function sanitize_input(&$userInput, &$db)
 	{
-		$sanitizedInput = mysqli_real_escape_string($this->mysqli, $userInput);
+		$sanitizedInput = $db->real_escape_string($userInput);
 		$sanitizedInput = htmlspecialchars($sanitizedInput);
 		return $sanitizedInput;
 	}

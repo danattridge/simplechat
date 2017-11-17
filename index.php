@@ -1,6 +1,7 @@
 <?php
 
-require_once 'inc/class.helpers.php';
+require_once 'inc/config.php';
+require_once 'inc/class.helper.php';
 require_once 'inc/class.simplechat.php';
 $help = new Helper();
 $sc = new SimpleChat($help);
@@ -18,18 +19,19 @@ $sc = new SimpleChat($help);
 
 <title>Simple Chat</title>
 
+
+
 <script type="text/javascript">
 
 $( document ).ready(function() {
 
-	
 	
 });
 
 </script>
 
 </head>
-<body>
+<body bgcolor="chucknorris">
 	
 	<div class="container">
 	
@@ -68,13 +70,22 @@ $( document ).ready(function() {
 			
 		</div><!-- /header -->
 		
+		<div class="row">
+      
+			<h3>Messages</h3>
+			<div id="chat-window" class="col-lg-12">
+				<?php print($sc->getConversation()); ?>
+			</div>
+		
+		</div>
+		
 		<div>
 			<form action="index.php" method="post">
 			  <div class="form-group">
 				<label for="message">Message:</label>
-				<textarea name="message"><?php print($_POST['message']); ?></textarea>
+				<textarea class="form-control" rows="5" name="message"><?php print($_POST['message']); ?></textarea>
 			  </div>
-			  <button type="submit" class="btn btn-default">Submit</button>
+			  <button type="submit" class="btn btn-default" id="send_message">Submit</button>
 			</form>
 		</div>
 		

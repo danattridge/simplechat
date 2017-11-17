@@ -2,13 +2,14 @@
 
 class SimpleChat {
 
-	private $mysqli;
+	private $helper;
+	private $db;
 	private $currentMessage;
 	
 	function __construct($helper){
-		
+		$this->helper = $helper;
 		//get db connection
-		$this->mysqli = $this->db_connect();
+		$this->db = $this->db_connect();
 		$this->initialize();
 		$this->insert_message();
 	}
@@ -25,36 +26,81 @@ class SimpleChat {
 		$dbName = 'da_simplechat';
 		
 		// Connecting to and select the MySQL database
-		$mysqli = new mysqli($host, $user, $password, $dbName);	
+		$db = new mysqli($host, $user, $password, $dbName);	
 		
 		// check connection */
-		if (mysqli_connect_errno()) {
-			printf("Connect failed: %s\n", mysqli_connect_error());
+		if ($db->connect_errno) {
+			printf("Connect failed: %s\n", $db->connect_errno);
 			exit();
 		}
 		
-		return $mysqli;
+		return $db;
 	}
 	
 	protected function initialize()
 	{
-		$this->create_tables();
+		//$this->create_tables();
+		//$this->populate_tables();
 		$_POST['message'] = isset($_POST['message']) ? $_POST['message'] : '';	
 	}
 	
 	protected function create_tables()
 	{
-		if (!$this->mysqli->query("SHOW TABLES LIKE `sc_user`")){
+		$sql = file_get_contents("sql/sc_message.sql");
+		if ($this->db->query($sql) === true) {
+			return true;
+		} else {
+			echo "Error: " . $sql . "<br>" . $this->db->error;
+		}
+		
+		$sql = file_get_contents("sql/sc_user.sql");
+		if ($this->db->query($sql) === true) {
+			return true;
+		} else {
+			echo "Error: " . $sql . "<br>" . $this->db->error;
+		}	
+	}
+	
+	protected function populate_tables()
+	{
+		$result = $this->db->query("SELECT COUNT(ID) as 'total' FROM `sc_message`");
+		
+		$row = $result->fetch_array();
+		
+		echo 'Total results: ' . $result->num_rows;
+		
+		/*if (count($row['total']) == 0){
 			
-			$sql = trim(file_get_contents("sql/create_tables.sql"));
+			$sql = file_get_contents("sql/example_data.sql");
 			
-			if ($this->mysqli->multi_query($sql) === true) {
+			if ($this->db->multi_query($sql) === true) {
 				return true;
 			} else {
-				echo "Error: " . $sql . "<br>" . $this->mysqli->error;
+				echo "Error: " . $sql . "<br>" . $this->db->error;
 			}
-		}
+		}*/
 			
+	}
+	
+	public function getConversation()
+	{
+		
+		$conversation = '';
+		$result = $this->db->query("SELECT * FROM `sc_message`");	
+		
+		
+		$tableStr = '';
+		$tableStr .= '<table>';
+		
+		while ($row = $result->fetch_assoc()){
+			$tableStr .= '<tr>';
+			$tableStr .= '<td>' . $row['user_id'] . '</td><td>' . stripslashes($row['message']) . '</td><td>' . stripslashes($row['datetime_posted']) . '</td>';	
+			$tableStr .= '</tr>';			
+		}
+		
+		$tableStr .= '</table>';
+		
+		return $tableStr;
 	}
 	
 	protected function insert_message()
@@ -62,14 +108,14 @@ class SimpleChat {
 		//check if message has been entered
 		if (isset($_POST['message']) && !empty($_POST['message'])){
 			
-			$this->currentMessage = $helper->sanitize_input($_POST['message']);
+			$this->currentMessage = $this->helper->sanitize_input($_POST['message'], $this->db);
 			
 			$sql = "INSERT INTO `sc_message` (`ID`, `user_id`, `message`, `datetime_posted`, `datetime_seen`, `deleted`) VALUES (NULL, '1', '".$this->currentMessage ."', CURRENT_TIMESTAMP, NULL, '0');";
 
-			if ($this->mysqli->query($sql) === true) {
+			if ($this->db->query($sql) === true) {
 				return true;
 			} else {
-				echo "Error: " . $sql . "<br>" . $this->mysqli->error;
+				echo "Error: " . $sql . "<br>" . $this->db->error;
 			}
 
 		}
