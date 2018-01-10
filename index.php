@@ -1,5 +1,6 @@
 <?php
 
+echo 'Hello';
 require_once 'inc/config.php';
 require_once 'inc/class.helper.php';
 require_once 'inc/class.simplechat.php';

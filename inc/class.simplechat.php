@@ -86,15 +86,16 @@ class SimpleChat {
 	{
 		
 		$conversation = '';
-		$result = $this->db->query("SELECT * FROM `sc_message`");	
+		$result = $this->db->query("SELECT * FROM `sc_message` m LEFT JOIN `sc_user` u ON m.user_id = u.ID");	
 		
 		
 		$tableStr = '';
 		$tableStr .= '<table>';
+		$tableStr .= '<tr><th>User</th><th>Message</th><th>Datetime</th></tr>';
 		
 		while ($row = $result->fetch_assoc()){
 			$tableStr .= '<tr>';
-			$tableStr .= '<td>' . $row['user_id'] . '</td><td>' . stripslashes($row['message']) . '</td><td>' . stripslashes($row['datetime_posted']) . '</td>';	
+			$tableStr .= '<td>' . $row['first_name'] . ' ' . $row['surname'] .'</td><td>' . stripslashes($row['message']) . '</td><td>' . stripslashes($row['datetime_posted']) . '</td>';	
 			$tableStr .= '</tr>';			
 		}
 		
